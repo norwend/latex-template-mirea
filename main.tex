@@ -1,0 +1,19 @@
+% КОМПИЛИРОВАТЬ ТОЛЬКО В XeTeX и LuaTeX! LaTeX не умеет в удобную работу со шрифтами, которые нужны в вузе.
+
+\input{preamble.tex}
+
+\begin{document}
+
+% \includepdf[pages=-]{titul_word.pdf} --- Для титульного листа, если есть шаблон из Ворда.
+\include{annotation}
+\gosttableofcontents
+\include{intro}
+
+% \include{1-scheme}
+% \include{2-calc}
+% \include{3-gist}
+
+\include{outro}
+\include{sources}
+
+\end{document}

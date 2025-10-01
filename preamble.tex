@@ -1,0 +1,384 @@
+% =================================================================================================
+% 1. ОПРЕДЕЛЕНИЕ КЛАССА ДОКУМЕНТА
+% =================================================================================================
+\documentclass[14pt, a4paper]{extarticle}
+
+
+% =================================================================================================
+% 2. ПОДКЛЮЧЕНИЕ ПАКЕТОВ
+% =================================================================================================
+
+% -------------------------------------------------------------------------------------------------
+% Шрифты и кодировка
+% -------------------------------------------------------------------------------------------------
+\usepackage{fontspec}       % Для работы с OpenType и TrueType шрифтами
+\usepackage{courier}        % Шрифт Courier для листингов
+\usepackage{upgreek}        % Греческие буквы в прямом начертании
+
+% -------------------------------------------------------------------------------------------------
+% Математика
+% -------------------------------------------------------------------------------------------------
+\usepackage{amsmath}        % Основные математические окружения
+\usepackage{amsfonts}       % Математические шрифты
+\usepackage{amssymb}        % Дополнительные математические символы
+\usepackage{amsthm}         % Оформление теорем
+\usepackage{mathtools}      % Расширение возможностей amsmath
+\usepackage{icomma}         % "Умная" запятая в десятичных дробях
+
+% -------------------------------------------------------------------------------------------------
+% Графика, таблицы и плавающие объекты
+% -------------------------------------------------------------------------------------------------
+\usepackage{graphicx}       % Для вставки изображений
+\usepackage{pdfpages}       % Для вставки страниц из PDF-файлов
+\usepackage{longtable}      % Для создания таблиц, занимающих несколько страниц
+\usepackage{float}          % Управление плавающими объектами (фигуры, таблицы)
+\usepackage{caption}        % Настройка подписей к плавающим объектам
+\usepackage{tcolorbox}      % Создание цветных рамок и блоков
+\tcbuselibrary{listings, breakable, skins} % Использование библиотек для tcolorbox
+\usepackage{listings}       % Для оформления листингов кода
+\usepackage{xcolor}         % Управление цветами
+
+% -------------------------------------------------------------------------------------------------
+% Форматирование страниц и абзацев
+% -------------------------------------------------------------------------------------------------
+\usepackage[includefoot=true]{geometry} % Управление полями страницы
+\usepackage{fancyhdr}       % Настройка колонтитулов
+\usepackage[none]{hyphenat} % Отключение переносов слов
+\usepackage{indentfirst}    % Красная строка для первого абзаца в секции
+\usepackage{enumitem}       % Расширенная настройка списков
+\usepackage{etoolbox}       % Инструменты для программирования макросов
+
+% -------------------------------------------------------------------------------------------------
+% Оглавление и ссылки
+% -------------------------------------------------------------------------------------------------
+\usepackage{hyperref}       % Создание гиперссылок в документе
+\usepackage{tocloft}        % Настройка оглавления
+
+% -------------------------------------------------------------------------------------------------
+% Вспомогательные пакеты
+% -------------------------------------------------------------------------------------------------
+\usepackage{zref-totpages}  % Для получения общего количества страниц
+\usepackage{chngcntr}       % Для изменения способа нумерации счетчиков
+
+
+% =================================================================================================
+% 3. НАСТРОЙКА ГЕОМЕТРИИ СТРАНИЦЫ И КОЛОНТИТУЛОВ
+% =================================================================================================
+
+% Установка полей страницы в соответствии с методичкой МИРЭА
+\geometry{a4paper, left=3cm, right=1cm, top=2cm, bottom=2cm}
+
+% Настройка колонтитулов
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[C]{\thepage}
+
+
+% =================================================================================================
+% 4. НАСТРОЙКА ШРИФТОВ
+% =================================================================================================
+
+\setmainfont[Ligatures=TeX]{Times New Roman}
+\setmonofont{Courier New}
+
+
+% =================================================================================================
+% 5. ФОРМАТИРОВАНИЕ АБЗАЦЕВ И ИНТЕРВАЛОВ
+% =================================================================================================
+
+\sloppy                                  % Улучшает выравнивание по ширине, избегая выхода за поля
+\linespread{1.4}                         % Полуторный межстрочный интервал
+\setlength{\parindent}{1.25cm}           % Величина абзацного отступа
+\setlength{\parskip}{0cm}                % Отсутствие дополнительного интервала между абзацами
+\hbadness=10000                          % Убираем дебильные предупреждения о длине пробелов
+
+
+% =================================================================================================
+% 6. НАСТРОЙКА ЗАГОЛОВКОВ
+% =================================================================================================
+
+\usepackage{titlesec} % Пакет для форматирования заголовков
+
+\titleformat{\section}
+  {\fontsize{18}{18}\bfseries}
+  {\thesection}
+  {0.5em}
+  {}
+  []
+\titlespacing{\section}{1.25cm}{*0}{12pt}
+
+\titleformat{name=\section,numberless}
+  {\centering\fontsize{18}{18}\bfseries}
+  {}
+  {0.5em}
+  {}
+  []
+\titlespacing{name=\section,numberless}{1.25cm}{*0}{12pt}
+
+\titleformat{\subsection}
+  {\fontsize{16}{16}\bfseries}
+  {\thesubsection}
+  {0.5em}
+  {}
+  []
+\titlespacing{\subsection}{1.25cm}{*0}{12pt}
+
+\titleformat{\subsubsection}
+  {\fontsize{14}{14}\bfseries}
+  {\thesubsubsection}
+  {0.5em}
+  {}
+  []
+\titlespacing{\subsubsection}{1.25cm}{24pt}{12pt}
+
+% Исправление интервала перед подразделами
+\newcommand{\subsecfix}{\vspace{24pt}}
+\preto{\subsection}{\subsecfix}
+\preto{\subsubsection}{\subsecfix}
+
+
+% =================================================================================================
+% 7. НАСТРОЙКА ОГЛАВЛЕНИЯ
+% =================================================================================================
+
+\renewcommand{\contentsname}{\makebox[\linewidth]{СОДЕРЖАНИЕ}}
+\renewcommand{\cfttoctitlefont}{\fontsize{18}{18}\centering\bfseries}
+
+\renewcommand{\cftsecleader}{\cftdotfill{.}}
+\renewcommand{\cftsubsecleader}{\cftdotfill{.}}
+\renewcommand{\cftsubsubsecleader}{\cftdotfill{.}}
+
+\renewcommand{\cftsecfont}{\fontsize{14}{14}}
+\renewcommand{\cftsecpagefont}{\fontsize{14}{14}}
+
+\cftsetindents{section}{0em}{0em}
+\cftsetindents{subsection}{0em}{0em}
+\cftsetindents{subsubsection}{0em}{0em}
+
+\setlength{\cftbeforesecskip}{0pt}
+
+\renewcommand{\cftsecnumwidth}{2em}
+\renewcommand{\cftsubsecnumwidth}{2.5em}
+\renewcommand{\cftsubsubsecnumwidth}{3em}
+
+
+% =================================================================================================
+% 8. ФОРМАТИРОВАНИЕ СПИСКОВ
+% =================================================================================================
+
+\renewcommand{\labelenumii}{\arabic{enumi}.\arabic{enumii}.}
+\renewcommand{\labelenumiii}{\arabic{enumi}.\arabic{enumii}.\arabic{enumiii}.}
+\renewcommand{\labelenumiv}{\arabic{enumi}.\arabic{enumii}.\arabic{enumiii}.\arabic{enumiv}.}
+
+\setlength{\labelsep}{0.6cm}
+\setlist[enumerate,itemize]{leftmargin=22.5mm}
+\setlist{nolistsep}
+
+
+% =================================================================================================
+% 9. НАСТРОЙКА МАТЕМАТИЧЕСКИХ ОКРУЖЕНИЙ
+% =================================================================================================
+
+\numberwithin{equation}{section}
+\addtolength{\jot}{1em}
+
+\expandafter\def\expandafter\normalsize\expandafter{%
+    \normalsize%
+    \setlength\abovedisplayskip{14pt}%
+    \setlength\belowdisplayskip{14pt}%
+    \setlength\abovedisplayshortskip{14pt}%
+    \setlength\belowdisplayshortskip{14pt}%
+}
+
+
+% =================================================================================================
+% 10. НАСТРОЙКА ПОДПИСЕЙ К РИСУНКАМ И ТАБЛИЦАМ
+% =================================================================================================
+
+\renewcommand{\figurename}{Рисунок}
+\renewcommand{\tablename}{Таблица}
+
+% Настройка формата подписей
+\DeclareCaptionFormat{image}{\fontsize{12}{12}\textbf{#1#2#3}}
+\DeclareCaptionFormat{table}{\fontsize{12}{8}\textit{#1#2#3}}
+\DeclareCaptionFormat{longtable}{\fontsize{12}{8}\textit{#1#2#3}}
+
+% Применение настроек
+\captionsetup[figure]{format=image, labelsep=endash, justification=centering, skip=0pt}
+\captionsetup[table]{format=table, singlelinecheck=false, labelsep=endash, margin=0pt, labelfont=it, justification=raggedright, position=top}
+\captionsetup[longtable]{format=longtable, singlelinecheck=false, labelsep=endash, skip=0pt, margin=0pt, labelfont=it, justification=raggedright, position=top}
+
+\setlength{\belowcaptionskip}{-12pt} % Уменьшение отступа после подписи
+
+% Нумерация рисунков и таблиц в пределах раздела (например, Рисунок 1.1)
+\AtBeginDocument{
+  \renewcommand{\thefigure}{\thesection.\arabic{figure}}
+  \renewcommand{\thetable}{\thesection.\arabic{table}}
+  \counterwithin{figure}{section}
+  \counterwithin{table}{section}
+}
+
+
+% =================================================================================================
+% 11. НАСТРОЙКА ЛИСТИНГОВ КОДА
+% =================================================================================================
+
+\renewcommand\lstlistingname{Листинг}
+\renewcommand\lstlistlistingname{Листинги}
+
+\lstdefinestyle{gostlisting}{
+    basicstyle=\fontsize{10}{8}\ttfamily\selectfont, 
+    breakatwhitespace=true,
+    breaklines=true,
+    captionpos=t,
+    keepspaces=true,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    stepnumber=10,
+    tabsize=4,
+    numberstyle=\tiny,
+}
+
+\DeclareCaptionFormat{listing}{\fontsize{12}{12}#1#2\textit{#3}}
+\captionsetup[lstlisting]{format=listing, singlelinecheck=false, margin=0pt, labelsep=endash, labelfont=it, justification=raggedright, position=top}
+
+% Нумерация листингов в пределах раздела
+\AtBeginDocument{
+  \renewcommand{\thelstlisting}{\thesection.\arabic{lstlisting}}
+  \counterwithin{lstlisting}{section}
+}
+
+% 1. Создаем общий стиль для листингов по ГОСТ
+% Стиль принимает 2 аргумента: #1 - Название, #2 - Метка
+\tcbset{
+  gostlistingstyle/.style n args={2}{
+    breakable,
+    listing only,
+    skin=freelance,      % Гарантирует полные рамки для всех фрагментов
+    % --- Общие настройки рамки и отступов ---
+    sharp corners,
+    colback=white,
+    colframe=black,
+    boxrule=0.5pt,
+    before skip=28pt plus 6pt,
+    boxsep = -2mm,
+    % --- Отключаем стандартный заголовок и рисуем свой ---
+    title={},
+    % Подпись для первого фрагмента листинга
+    extras unbroken and first={
+      overlay={
+        \node[
+          anchor=south west,
+          text=black,
+          yshift=-3pt,
+          xshift=-4pt,
+        ]
+        at (frame.north west)
+        {\fontsize{12}{14.4}\itshape\selectfont Листинг \thelstlisting\ --- #1};
+      }
+    },
+    % Подпись для последующих фрагментов
+    extras middle and last={
+      overlay={
+        \node[
+          anchor=south west,
+          text=black,
+          yshift=-3pt,
+          xshift=-4pt,
+        ]
+        at (frame.north west)
+        {\fontsize{12}{14.4}\itshape\selectfont Продолжение Листинга \ref{lst:#2}};
+      }
+    },
+    % --- Нумерация и опции для пакета listings ---
+    step and label={lstlisting}{lst:#2},
+    listing options={style=gostlisting},
+  }
+}
+
+% 2. Объявляем окружение, используя созданный стиль
+% Аргументы {m m} передаются в стиль {gostlistingstyle={#1}{#2}}
+\DeclareTCBListing{lstgost}{ m m }{
+    gostlistingstyle={#1}{#2}
+}
+
+% 3. Объявляем команду для вставки из файла, используя тот же стиль
+% Аргументы {m m m} -> первые два передаются в стиль, третий в listing file
+\DeclareTCBInputListing{\inplstgost}{ m m m }{
+    listing file={#3},
+    gostlistingstyle={#1}{#2}
+}
+
+% =================================================================================================
+% 12. ГИПЕРССЫЛКИ
+% =================================================================================================
+
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=blue
+}
+
+
+% =================================================================================================
+% 13. ПОЛЬЗОВАТЕЛЬСКИЕ КОМАНДЫ
+% =================================================================================================
+
+\newcommand{\gosttableofcontents}{
+    % \addtocontents{toc}{\protect\thispagestyle{empty}}
+    % \fancyfoot{}
+    \tableofcontents
+    % \thispagestyle{empty}
+    \clearpage
+    % \fancyfoot[C]{\thepage}
+}
+
+\newsavebox{\imagebox}
+
+\newcommand{\insertpicture}[4][\relax]{
+  \begin{figure}[H]
+    \centering
+    \ifx#1\relax
+      % --- РЕЖИМ АВТОМАТИЧЕСКОГО РАЗМЕРА ---
+      % Пользователь не указал ширину, используем нашу логику.
+      % Аргументы сдвигаются: #4=путь, #2=подпись, #3=метка
+      
+      % Помещаем изображение в "коробку", чтобы измерить его
+      \sbox{\imagebox}{\includegraphics{#4}}
+      \ifdim\wd\imagebox>\ht\imagebox
+        \includegraphics[width=\textwidth, keepaspectratio]{#4}
+      \else
+        \ifdim\ht\imagebox>2\wd\imagebox
+          \includegraphics[height=0.75\textheight, keepaspectratio]{#4}
+        \else
+          \includegraphics[height=0.4\textheight, keepaspectratio]{#4}
+        \fi
+      \fi
+      \caption{#2}
+      \label{fig:#3}
+    \else
+      \includegraphics[width=#1\textwidth, keepaspectratio]{#4}
+      \caption{#2}
+      \label{fig:#3}
+    \fi
+  \end{figure}
+}
+
+\newenvironment{gosttable}[3]{
+  \vspace{18pt}
+  \begin{longtable}{#3}
+  \caption{#1\label{tab:#2}} % <--- Переместите \label сюда
+  \vspace{-16pt}
+  \\
+  \endfirsthead
+  \caption*{Продолжение таблицы \thetable}
+  \vspace{-16pt}
+  \endhead
+}
+{
+  \end{longtable}
+}
